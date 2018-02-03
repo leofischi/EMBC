@@ -28,7 +28,7 @@
 % * <aforner@usp.br> 2018-01-28T08:34:32.702Z:
 %
 % ^.
-\title{\LARGE \bf Elbow joint angle estimation from surface electromyography with autoregressive moving average models
+\title{\LARGE \bf Elbow Joint Angle Estimation by Using Surface Electromyography and System Identification
 }
 
 \author{L. F. Sommer, C. Barreira, C. Noriega, F. Camargo-Junior, R.T. Moura and A. Forner-Cordero% <-this % stops a space
@@ -48,14 +48,14 @@
 
 %This paper presents a method for elbow joint angle estimation through the measurement of surface electromyography from the biceps, triceps and brachioradialis. This estimation has great importance for either mechanical modeling of biologic systems and bio-inspired mechanisms. However interpreting and processing electromyography signals is challenging due to nonlinearities, unmodeled muscle dynamics and interference signals. Here a model is proposed based on experimental data of the elbow movement and the EMG recordings of the biceps brachii, triceps brachii and brachioradialis. A system identification method is applied to estimate an Auto-Regressive Moving Average with Exogenous Input (ARMAX) model to calculate the elbow joint angle using the acquired EMG data as input to the system. The results show that the proposed model achieves great values for both correlation and mean-square-root error when compared to the measured angle data, proving to be an effective model for the EMG-to-angle relation.
 
-This paper presents a method to estimate the elbow joint angle from surface electromyography (sEMG) measurements of biceps, triceps and brachioradialis. This estimation is of major importance for the design of human robot interfaces based on sEMG. It is also very important to model the muscular system and to design biomimetic mechanisms. However, the processing and interpretation of electromyography signals is challenging due to nonlinearities, unmodeled muscle dynamics noise and interferences. In order to determine an estimation model and a calibration procedure for the model parameters, a set of experiments were carried out with six subjects. The experiments consisted of series of continuous (cyclical) and discrete elbow flexo-extensions. The sEMG data from the biceps brachii, triceps brachii and brachioradialis and the joint angle were recorded. Four different modeling techniques were used to find the best model for elbow joint angle using Electromyography as input signal: State Space (SS), Autoregressive with Exogenous Input (ARX), Autoregressive Moving-Average with Exogenous Input (ARMAX), Autoregressive Integrated Moving-Average with Exogenous Input. After the model was selected, a second experiment was performed in order to validate the estimation procedure. The results show an effective model for the EMG-to-angle relation with great values for both correlation and mean-square-root error when compared to the measured angle data.
+This paper presents a method to estimate the elbow joint angle from surface electromyography (sEMG) measurements of biceps, triceps and brachioradialis. This estimation is of major importance for the design of human robot interfaces based on sEMG. It is also very important to model the muscular system and to design biomimetic mechanisms. However, the processing and interpretation of electromyography signals is challenging due to nonlinearities, unmodeled muscle dynamics noise and interferences. In order to determine an estimation model and a calibration procedure for the model parameters, a set of experiments were carried out with six subjects. The experiments consisted of series of continuous (cyclical) and discrete elbow flexo-extensions at three different loads (i.e. 0 kg, 1.5kg and 3 kg). The sEMG data from the biceps brachii, triceps brachii and brachioradialis and the joint angle were recorded. Four different modeling techniques were evaluated: State Space (SS), Autoregressive with Exogenous Input (ARX), Autoregressive Moving-Average with Exogenous Input (ARMAX), Autoregressive Integrated Moving-Average with Exogenous Input (ARIMAX). After the model was selected, a second experiment was performed in order to validate the estimation procedure. The results show an effective model for the EMG-to-angle relationship with great values for both correlation and mean-square-root error when compared to the measured angle data.
 
 \end{abstract}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
-An exoskeleton is a robotic device acting in parallel with the human body. There are different electrophysiological signals that can be used to control an exoskeleton, however, the user must also learn how to apply this control. Therefore, it seems interesting to use the control signals that are used by the body to activate the muscles. As these neural control signals are not easily accessible, surface electromyography (sEMG) it has been used  as the control for upper-limb exoskeletons \cite{Tang7332977,Lenzi2012} . 
+An exoskeleton is a robotic device acting in parallel with the human body. There are different electrophysiological signals that can be used to control an exoskeleton, however, the user must also learn how to apply this control. Therefore, it seems interesting to use the control signals that are used by the body to activate the muscles. As these neural control signals are not easily accessible, surface electromyography (sEMG) has been used  as a control signal for upper-limb exoskeletons \cite{Lenzi2012} . 
 % * <aforner@usp.br> 2018-01-28T08:28:13.946Z:
 % 
 % AQUI FALTA UMA REFERENCIA - Resolvido
@@ -66,11 +66,16 @@ An exoskeleton is a robotic device acting in parallel with the human body. There
 
 %1) EMG is not the neural control signal (Farina, )
 
-In our application, we aim at using an exoskeleton to provide additional force to help in the execution of a motor task. For instance, a person with muscle weakness that needs extra force during a certain activity. Therefore, it is assumed that the sEMG signals do not show pathological patterns.
+%In our application, we aim at using an exoskeleton to provide additional force to help in the execution of a motor task. For instance, a person with muscle weakness that needs extra force during a certain activity. Therefore, it is assumed that the sEMG signals do not show pathological patterns.
 
-In order to extract the information from sEMG to control a device, two main approaches can be considered. One is based on the identification of the model that generates these signals and then it is possible to obtain the desired mechanical parameter (e.g., force or position). The other approach is based on the classification of the desired task. In this case, it is necessary to define a finite set of possible tasks.  \cite{Fougner2012663}\cite{Fougner2011644}
+%In order to extract the information from sEMG to control a device, two main approaches can be considered. One is based on the identification of the model that generates these signals and then it is possible to obtain the desired mechanical parameter (e.g., force or position). The other approach is based on the classification of the desired task. In this case, it is necessary to define a finite set of possible tasks.  \cite{Fougner2012663}\cite{Fougner2011644}
 
-Muye et al. \cite{Pang2015165} used sEMG signals to design a quantitative method for representation of the elbow joint angle for movements on the sagittal plane. This quantitative relation is developed using Hill-type musculoskeletal model. Since only sEMG signals were used as input for the proposed method, some parameters were not measured, introducing some errors. A state switching model was developed to decrease the influence of these errors. The model achieved high precision: root-mean-square (RMS) errors \(<\) \(10^{\circ}\) for continuous movement and for stepping motion with \(20^{\circ}\) and \(30^{\circ}\) increments and RMS errors \(<\) \(20^{\circ}\) for stepping motion with 10º increments. 
+Up to date there are different techniques to estimate the desired joint angle from sEMG. There are three methods of defining the relationship between EMG signal and the respective joint movement that are extensively used: mathematical morphological modeling (e.g. Hill's muscle model), system identification (e.g. auto-regressive models) and artificial intelligence (e.g. neural networks) \cite{Anam2012988}. 
+%However, human modeling is complex and nonlinear because bio-signals are noisy and varied  \cite{Fougner2012663,kato2015}.
+
+Muye et al. \cite{Pang2015165} used sEMG signals to design a quantitative method for representation of the elbow joint angle. This relation is developed using Hill-type musculoskeletal model. Since only sEMG signals were used as input for this method, some parameters were not measured, introducing some errors. 
+%A state switching model was developed to decrease the influence of these errors. 
+The model achieved high precision: overall, root-mean-square (RMS) errors \(<\) \(20^{\circ}\) for the proposed movements. 
 % * <aforner@usp.br> 2018-01-28T08:40:45.942Z:
 % 
 % >  sEMG signals were
@@ -86,30 +91,30 @@ Muye et al. \cite{Pang2015165} used sEMG signals to design a quantitative method
 
 % Gao et al. \cite{Gao2016} proposes a biomechanical model with the elbow joint angle as input and surface electromyography (sEMG) signals as output. The model comprised three EMG sources: the Central Nervous System (CNS), the Golgi tendon and the muscle spindle. To estimate the physiological characteristics of the individual an algorithm combining Powell Search and direct search was used. By separating the EMG sources on the model it is possible to better explore the peripheral neural system and pathogenesis of tremor.
 
-Aung, Al-Jumaily \cite{Aung2013} proposes an upper limb joint angle estimation methodology through back propagation neural network (BPNN) integrated into a Virtual Human Model (VHM). A three-layer neural network was used: the first being the input layer, with signals from four muscles; the second one a hidden layer with the Levenberg-Marquardt algorithm employed; and the last being the output layer.
+%Aung, Al-Jumaily \cite{Aung2013} proposes an upper limb joint angle estimation methodology through back propagation neural network (BPNN) integrated into a Virtual Human Model (VHM). A three-layer neural network was used: the first being the input layer, with signals from four muscles; the second one a hidden layer with the Levenberg-Marquardt algorithm employed; and the last being the output layer.
 
-Rahmatian et al. \cite{Rahmatian2016158} proposed a method for continuous estimation of ankle joint angular position based on sEMG. Support Vector Machine (SVM) algorithm was used as strategy for classification of the lower limb sEMG data, while Time-Delayed Artificial Neural Network (TDANN) approximates angles and velocities of the joint. The accuracy obtained in this study was 95.4\%, and the authors believe that these results can be useful in the controlling of leg prostheses.
+%Rahmatian et al. \cite{Rahmatian2016158} proposed a method for continuous estimation of ankle joint angular position based on sEMG. Support Vector Machine (SVM) algorithm was used as strategy for classification of the lower limb sEMG data, while Time-Delayed Artificial Neural Network (TDANN) approximates angles and velocities of the joint. The accuracy obtained in this study was 95.4\%, and the authors believe that these results can be useful in the controlling of leg prostheses.
 
-Artemiadis and Kyriakopoulos \cite{Artemiadis1642196} proposed a method for teleoperating a robotic arm , through the use of electromiography signals and a trajectory monitoring technique based on human motion analysis. The EMG signal from the extensor and flexor muscles of the elbow joint were acquired and the elbow joint was predicted by calculating a model for the elbow joint using the Autoregressive Moving-Average with Exogenous Input (ARMAX) model. This technique was able to predict the user motion with high precision, in different hand trajectories and speed. For a single flexion movement, the system was capable of achieving a prediction error lower than \(5^{\circ}\).
+Artemiadis and Kyriakopoulos \cite{Artemiadis1642196} proposed a method for teleoperating a robotic arm through the use of electromiography signals and a trajectory monitoring technique based on human motion analysis. The EMG signal from the extensor and flexor muscles of the elbow joint were acquired and the elbow joint angle was predicted by calculating a model for the elbow joint using the Autoregressive Moving-Average with Exogenous Input (ARMAX) model. 
+%This technique was able to predict the user motion with high precision, in different hand trajectories and speed. 
+For a single flexion movement, the system was capable of achieving prediction errors lower than \(5^{\circ}\).
 
-Mamikoglu et al. \cite{Mamikoglu2016785} also proposed a methodology of muscle modeling to estimate ankle joint angles based on EMG measurements. The musculoskeletal model is based on a multi input single output (MISO) Autoregressive Integrated Moving-Average with Exogenous Input (ARIMAX) model, which takes the integrated EMG measurements as input and estimates the corresponding joint angles. The proposed method was capable of achieving fitness values above 0.9 for single speed contractions and above 0.77 for varying speed contractions.%complementando embaixo o que o Prof. Arturo escreveu (linha125-126).
- However, human modeling is complex and nonlinear because bio-signals are noisy and varied \cite{kato2015}.
+%Mamikoglu et al. \cite{Mamikoglu2016785} also proposed a methodology of muscle modeling to estimate ankle joint angles based on EMG measurements. The musculoskeletal model is based on a multi input single output (MISO) Autoregressive Integrated Moving-Average with Exogenous Input (ARIMAX) model, which takes the integrated EMG measurements as input and estimates the corresponding joint angles. The proposed method was capable of achieving fitness values above 0.9 for single speed contractions and above 0.77 for varying speed contractions. 
 
-Since the addition of load can decrease the accuracy of myoeletric control system up to 60\% \cite{Al-Timemy6610859}, Azadet al. \cite{Azab8037374} proposed to pool sEMG data from different loads (1, 2, 4, 6 kg) and use this for training two classification models: k-Nearest Neighbours algorithm (KNN) and Naive Bayes classifers (NB). The results showed mean accuracy (3 subjects) of 53\% and 36\%, KNN and NB respectively, for subject-dependent conditions, and 22\% and 36\% for subject-independent condictions.
+%Since the addition of load can decrease the accuracy of myoeletric control system up to 60\% \cite{Al-Timemy6610859}, Azadet al. \cite{Azab8037374} proposed to pool sEMG data from different loads (1, 2, 4, 6 kg) and use this for training two classification models: k-Nearest Neighbors algorithm (KNN) and Naive Bayes classifers (NB). The results showed mean accuracy (3 subjects) of 53\% and 36\%, KNN and NB respectively, for subject-dependent conditions, and 22\% and 36\% for subject-independent conditions.
 
-In addition to the problem estimation of joint movement from sEMG, there is the joint torque estimation from sEMG. This problem requires the estimation of muscle forces from sEMG and then the estimation of joint torques from the combination forces of different muscles acting on a joint. However, according to Disselhorst-Klug et al \cite{Disselhorst-Klug2009225}, the largest disadvantage in predicting the muscle force from sEMG is the fact that the force generated by a muscle cannot be directly measured non-invasively. The best results can be obtained only for geometrically well-defined situations during isometric contractions. However, factors such as muscle fatigue and the elastic properties of the the muscle tissue, tendons and ligaments have an important influence in the estimation of the muscle force. The scenario are even more complicated when we consider dynamic contractions and muscle redundancy to estimate the joint torques. 
+%In addition to the problem of estimating joint movement from sEMG, there is the joint torque estimation from sEMG. This problem requires the estimation of muscle forces from sEMG and then the estimation of joint torques from the combination forces of different muscles acting on a joint. However, according to Disselhorst-Klug et al \cite{Disselhorst-Klug2009225}, the largest disadvantage in predicting the muscle force from sEMG is the fact that the force generated by a muscle cannot be directly measured non-invasively. The best results can be obtained only for geometrically well-defined situations during isometric contractions. However, factors such as muscle fatigue and the elastic properties of the the muscle tissue, tendons and ligaments have an important influence in the estimation of the muscle force. The scenario are even more complicated when we consider dynamic contractions and muscle redundancy to estimate the joint torques. 
 
 %Cao et al. \cite{Cao20151014} developed a model with a new analytical formulation of the muscle generation for evaluating the signal and force from the biceps brachii  by surface electromyography (sEMG). The objective was to evaluate isometric isotonic contractions of the biceps brachii. This model supposes varying minimum and peak firing frequencies in function of motor unit type (i.e. type I or II).
-
+%
 %Hayabishe et al.\cite{Hayashibe20091621}  reviewed different muscle models to study voluntary muscle contraction. In addition to Hill macroscopic model, microscopic physiology models were observed, like Huxley's, physiologically and biophysically detailed model that proposed an explanation of the interaction cross bridge in a sarcomere. Thus, \cite{Hayashibe20091621} try to realize EMG-to-force estimation based on this physiological based muscle model in voluntary contraction. 
-
+%
 % Mamikoglu et al\cite{Mamikoglu2016785} propose one way of approach using an auto-regressive integrated moving average with exogenous input (ARIMAX). This method is based in EMG-driven and considers a relation approximately linear between this signal and the production of muscular force. During an elbow flexion/extension, the ARIMAX approach allows an increase of almost 22\% of the joint angle estimation than common EMG processing techniques and above 41\% when the movements consisted of different velocities.
-
-Liu et al. \cite{Liu1999391} developed another procedure to predict the muscle force from sEMG using an artificial neural network (ANN). This approach is based on three steps: 1) derivation of the sEMG-force signal from experimental data; 2) use this relation for different conditions (slow walking and trotting); and 3) validation of the results obtained with registers of known muscular force. The main advantage of this method is that it does not depend on the determination of the force-length-velocity properties to define muscle dynamics. These predictions showed cross-correlation coefficients \(>\) 0.90 and RMS errors \(<\) 15\%.
-
+%
+Liu et al. \cite{Liu1999391} developed another procedure to predict the muscle force from sEMG using an artificial neural network (ANN). This approach is based on: derivation of the sEMG signal from experimental data, using this relation for different conditions (slow walking and trotting) and validation of the results obtained with registers of known muscular force. These predictions showed cross-correlation coefficients above 0.90 and RMS errors lower than 15\%.
+%
 %The fatigue effects in the voluntary contraction dynamics affect the EMG-force relation. Asefi et al. \cite{Asefi201641} proposed a model that combine Laguerre estimation technique (LET), to dynamic EMG-force identification, and kernel analysis, to investigate the presence of fatigue, allowing an approach to the problem. In the experiment with palmaris longus muscle and brachioradialis during the grasping tasks, the LET methods allowed a prediction adjustment of 15\% and 3.8\% in the EMG-force relations compared to the non-parametric methods fast orthogonal search and parallel cascade identification, respectively. Moreover, the muscle fatigue can be predicted by peak values of the first order kernels and high frequency of the second order.
-
-
+%
 % * <aforner@usp.br> 2018-01-28T09:39:23.077Z:
 % 
 % REVIEW INCOMPLETE AND SKEWED.
@@ -121,40 +126,43 @@ Liu et al. \cite{Liu1999391} developed another procedure to predict the muscle f
 % * <aforner@usp.br> 2018-01-28T11:58:13.283Z:
 % 
 % Goal of the paper in the context of the previously mentioned articles.
-
-
+% 
+% 
 % SOMETHING LIKE THIS:
 % "Up to date there are different techniques to estimate the desired joint angle from sEMG, however, it is still an open problem in exoskeleton control. It is possible that sEMG alone cannot provide the necessary information to determine a certain joint angle (Lloyd et al , 2003; Farina et al: EMG is not a muscle control signal).
 % 
 % ^.
-The paper is organized as follows: Section II presents the methods for experimentation, the experiment protocol and the recorded data processing are presented. Section III explains the system modeling and mathematical analysis of the model. Section IV shows the results obtained that are discussed in Section V along with future research to continue this work.
+
+Designing a morphological model requires the knowledge on user-dependent parameters, such as muscle length and limb dimensions, undermining the practicality of the model without extensive measurements. Instead of determining the physical characteristics of the system, it is possible to estimate a model using system identification techniques. Since the EMG signal can be considered a time varying stochastic process, it can be modeled as a zero-mean Gaussian distribution \cite{Hogan4123280,Hogan4123279}. This opens the possibility to represent the EMG-angle relation as an Auto Regressive model.
+
+The paper is organized as follows: Section II presents the methods for experimentation, the experiment protocol and the recorded data processing. Section III explains the system modeling and mathematical analysis of the model. Section IV shows the results obtained that are discussed in Section V along with future research to continue this work.
 
 \section{Methods}
 \subsection{Subjects and experimental setup}
-Six volunteers (age: 34.3 $\pm$ 14.7 years, height: 1.74 $\pm$ 0.1 m, weight: 67.9 $\pm$ 15.7 kg, four male, two female, all right-handed) without known neuromuscular deficit participated in the experiments. Elbow joint angle along with the surface Electromyography (sEMG) of three right arm muscles, biceps brachii,  triceps brachii and brachioradialis were recorded. 
-sEMG was measured with 3 pairs of BTS FREEEMG 1000 (BTS Spa, Italy) electrodes with an electrode separation of 20mm with the electrode diameter being 4mm. A pair of electrodes was placed on the biceps and other pair on the triceps following the SENIAM guidelines \cite{SENIAM20170110}. To determine the electrode positions of the brachioradialis muscle, the subject was asked to apply force to flex the forearm while keeping it at \(90^{\circ}\). Then, the electrodes were placed on the muscle belly separated by 20mm following the muscle fiber direction. The sampling rate was of 1KHz with 16 bit resolution. The user interface was the BTS FREEEMG software. 
+Six volunteers (age between 21-57 years old, height between 1.61-1.91 m, weight between 49.3-91.4 kg, four male, two female, all right-handed) without known neuromuscular deficit participated in the experiments. Elbow joint angle along with surface Electromyography (sEMG) of three right arm muscles (biceps brachii,  triceps brachii and brachioradialis) were recorded. 
+sEMG was recorded with 3 pairs of BTS FREEEMG 1000 (BTS SpA, Italy) electrodes with an electrode separation of 20mm with the electrode diameter being 4mm. A pair of electrodes was placed on the biceps and other pair on the triceps following the SENIAM guidelines \cite{SENIAM20170110}. To determine the electrode positions of the brachioradialis muscle, the subject was asked to apply force to flex the forearm while keeping it at \(90^{\circ}\). Then, the electrodes were placed on the muscle belly separated by 20mm following the muscle fiber direction. The sampling rate was of 1KHz with 16 bit resolution. The user interface was the BTS FREEEMG software. 
 
-To measure the joint angle, a six degrees of freedom Inertial Measurement Unit (IMU, VN-100 from VectorNav, TX, USA), with \(0.01^{\circ}\) precision, was attached on the internal aspect of the forearm, located at two-thirds distance from the elbow to the wrist. The angle values were acquired with a rate of 100 samples per second. The data was collected with Matlab\textsuperscript{\textregistered}.
+  To measure the joint angle, a six degrees of freedom Inertial Measurement Unit (IMU, VN-100 from VectorNav, TX, USA), with \(0.01^{\circ}\) precision, was attached on the internal aspect of the forearm, located at two-thirds distance from the elbow to the wrist. The angle values were acquired with a rate of 100 samples per second. The data was collected with Matlab\textsuperscript{\textregistered}(The Mathworks Inc, USA).
 
 \subsection{Experimental Protocol}
 
-\begin{figure}[thpb]
-      \centering
-      \includegraphics[scale=0.32]{Images/Experiment_Image.jpg}
-      \caption{Experimental setup on a test subject}
-      \label{Experimental Setup}
-   \end{figure}
+% \begin{figure}[thpb]
+%       \centering
+%       \includegraphics[scale=0.32]{Images/Experiment_Image.jpg}
+%       \caption{Experimental setup on a test subject}
+%       \label{Experimental Setup}
+%    \end{figure}
 
 The subject sat on a chair, with the knees flexed at \(90^{\circ}\), the back perpendicular to the ground with the scapulae pressed against the wall. The posterior part of the upper arm was leaning against a rubber support attached to the wall. This setup guaranteed that the subject was comfortable enough to perform repeated elbow flexions and extensions while maintaining the upper arm steady. 
 
-The test protocol had three parts: The first one consisted of an isometric force test to obtain the Maximum Voluntary Contraction (MVC). The elbow of subject was kept in a fixed position at \(90^{\circ}\) and he/she was asked to apply the maximal possible force to flex the elbow. The subject was given a three minute interval before the next set.
+The test protocol had three parts: The first one consisted of an isometric force test to obtain the Maximum Voluntary Contraction (MVC). The elbow of the subject was kept in a fixed position at \(90^{\circ}\) and he/she was asked to apply the maximum possible force to flex the elbow. The subject was given a three minute interval before the next set.
 
-In the second part, the subject was asked to perform five consecutive elbow flexion and extension movements from  \(50^{\circ}\) to \(140^{\circ}\) with a frequency of 0.5Hz. To help the subject reach the correct target angles a template was attached to the wall parallel to the subject, to provide visual guidance. To achieve the desired movement speed a metronome was set at the speed of 60 bpm so that the subject could synchronize the movements with the sound of the metronome.    
+In the second part, the subject was asked to perform five consecutive elbow flexion and extension movements from  \(50^{\circ}\) to \(140^{\circ}\) with a frequency of 0.5Hz. To help the subject reach the correct target angles a template was attached to the wall parallel to the subject, to provide visual guidance. To achieve the desired movement speed a metronome was set at the speed of 60 bpm so that the subject could synchronize the movements with the sound of the metronome. A minute of rest was given to the subject before the next part.
 
-   The subject was given a minute of rest before the third part of the experiments. In this part the subject was asked to make an elbow flexion for 1 second, then hold his forearm at \(140^{\circ}\) for 1 s, then a 1 s extension movement and then hold the forearm at \(50^{\circ}\) for another second. This cycle should be repeated five times. Another one minute resting time was given to the subject.
+In the third part the subject was asked to make an elbow flexion for 1 second, hold his forearm at \(140^{\circ}\) for 1 s, then a 1 s extension movement and then hold the forearm at \(50^{\circ}\) for another 1 s. This cycle should be repeated five times. Another one minute resting time was given to the subject.
 Both of the continuous and interval tests were repeated with 1.5kg and 3kg extra weight placed at the subject's hand.
 
-The test was repeated in a different day, on all test subjects to further analyze the repeatability of the model proposed in this work.
+The test was repeated in a different day, on all test subjects, to further analyze the repeatability of the model proposed in this work.
 
 All the data from the tests were transferred to Matlab\textsuperscript{\textregistered} for further analysis and processing.
 
@@ -171,18 +179,19 @@ The EMG data were processed as follows. Further explanations can be found on the
 
 This way, the EMG is smoothed and presented as a percentage of the subject MVC instead of Volts.
 
-A low-pass, 1 Hz cutoff frequency, second-order Butterworth filter is applied to the angular data to remove errors and other undesired signals.
+A low-pass, 20 Hz cutoff frequency, second-order Butterworth filter is applied to the angular data to remove errors and other undesired signals.
 
-Since the position tracking data was sampled at 100 Hz while the EMG data was sampled at 1KHz, all the position tracking data was resampled to 1000 Hz, an antialiasing finite impulse response (FIR) lowpass filter was applied and the delay introduced by the filter was compensated.
+Since the position tracking data was sampled at 100 Hz while the EMG data was sampled at 1KHz, all the position tracking data was resampled to 1000 Hz.
+%, an antialiasing finite impulse response (FIR) lowpass filter was applied and the delay introduced by the filter was compensated.
 
-Figure \ref{Angle and EMG} shows an example of the recorded elbow angle and processed sEMG for the continuous movement with no extra weight.
+% Figure \ref{Angle and EMG} shows an example of the recorded elbow angle and processed sEMG for the continuous movement with no extra weight.
 
-\begin{figure}[thpb]
-      \centering
-      \includegraphics[scale=0.25]{Images/Angle_and_EMGs.jpg}
-      \caption{a) Joint angle for the continuous movement with no extra weight, recorded with the IMU; sEMG values for the b) biceps brachii, c) triceps brachii and d) brachioradialis for the continuous movement with no extra weight. }
-      \label{Angle and EMG}
-   \end{figure}
+% \begin{figure}[thpb]
+%       \centering
+%       \includegraphics[scale=0.25]{Images/Angle_and_EMGs.jpg}
+%       \caption{a) Joint angle for the continuous movement with no extra weight, recorded with the IMU; sEMG values for the b) biceps brachii, c) triceps brachii and d) brachioradialis for the continuous movement with no extra weight. }
+%       \label{Angle and EMG}
+%    \end{figure}
 
 
 \section{System Modeling}
@@ -194,7 +203,7 @@ Figure \ref{Angle and EMG} shows an example of the recorded elbow angle and proc
       \label{Models Comparison}
    \end{figure}
 
-It was assumed that the arm model was the same in all the conditions with different inertia values for the different weights attached to the arm of the subject arm. Considering a simple cinematic model of the elbow joint, with one degree of freedom considering the flexion-extension movement in the sagittal plane: 
+%It was assumed that the arm model was the same in all the conditions with different inertia values for the different weights attached to the arm of the subject arm. Considering a simple cinematic model of the elbow joint, with one degree of freedom considering the flexion-extension movement in the sagittal plane: 
 
 % * <aforner@usp.br> 2018-01-28T12:41:31.518Z:
 % 
@@ -203,14 +212,16 @@ It was assumed that the arm model was the same in all the conditions with differ
 % 
 % ^.
 
-\begin{equation}
-\label{eq:arm model}
-T = (J + M\cdot L^2)\cdot \ddot{\theta}  + B \cdot \dot{\theta}  + (m\cdot l + M \cdot L) \cdot g \cdot cos(\theta)
-\end{equation}
+% \begin{equation}
+% \label{eq:arm model}
+% T = (J + M\cdot L^2)\cdot \ddot{\theta}  + B \cdot \dot{\theta}  + (m\cdot l + M \cdot L) \cdot g \cdot cos(\theta)
+% \end{equation}
 
-Where T is the elbow joint torque, J is the forearm inertia, B is the damping factor of the joint, m is the forearm mass, M is the mass of the dumbbell, g is the gravity force and \(\theta\) is the joint angle. From this simple model it is easy to infer that, by changing the mass of the dumbbell, the arm model parameters also change.
+% Where T is the elbow joint torque, J is the forearm inertia, B is the damping factor of the joint, m is the forearm mass, M is the mass of the dumbbell, g is the gravity force and \(\theta\) is the joint angle. From this simple model it is easy to infer that, by changing the mass of the dumbbell, the arm model parameters also change.
 
-Four different modeling techniques were applied to determine which one best estimated the model that provides the elbow angle as an output taking the three EMG signals as inputs. These modeling techniques were: Autoregressive with Exogenous Input (ARX), Autoregressive Moving-Average with Exogenous Input (ARMAX), Autoregressive Integrated Moving-Average with Exogenous Input (ARIMAX) and State Space (SS).
+
+
+Four different modeling techniques were tested to determine which of them gave the best estimation for elbow angle: Autoregressive with Exogenous Input (ARX), Autoregressive Moving-Average with Exogenous Input (ARMAX), Autoregressive Integrated Moving-Average with Exogenous Input (ARIMAX) and State Space (SS).
 
 
 In order to find a solution a search was done using 1000 models of each type with random model orders ranging from 1 to 10. 
@@ -227,7 +238,7 @@ In order to find a solution a search was done using 1000 models of each type wit
 % 
 % ^.
 
-Each model was compared to the reference angle using equation \ref{eq:fitness}. The orders of the model that achieved the highest fitness value from this equation were chosen. The parameters of the models were estimated using time-domain data in Matlab\textsuperscript{\textregistered} (The Mathworks Inc, USA).
+Each model was compared to the reference angle using equation \ref{eq:fitness}. The orders of the model that achieved the highest fitness value were chosen. The parameters of the models were estimated using time-domain data in Matlab\textsuperscript{\textregistered}.
 
 % With the model estimation technique chosen, it is necessary to determine the order of its parameters. To determine the chosen model order, 400 random combinations were tested for each data set with order values going from 0 to 10. The order chosen was the one that gave the best fit (see eq. \ref{eq:NRMSE}) between the calculated value and the one measured by the experiment. The coefficients of the models were estimated using time-domain data in Matlab\textsuperscript{\textregistered} (The Mathworks Inc, USA), minimizing a quadratic prediction error criterion.
 
@@ -281,7 +292,7 @@ Where $y$ is the measured angle and $\hat{y}$ is the estimated angle.
 
 \section{Results}
 
-The ARX model achieved the highest fitness value for every test subject and every test set.  For this reason it was the chosen model for the consequent estimations.
+The ARX model outperforms the other models for every test subject and every test set.  For this reason it was the chosen model for the consequent estimations.
 
 For illustration, figure \ref{Models Comparison} shows the comparison between the best models of each type with measured elbow angle for subject 3.
 
@@ -289,10 +300,10 @@ The ARX model has the following form:
 
 \begin{equation}
 \label{eq:ARX}
-A(q)y(t) = \sum_{m=1}^{3}B_m(q)u_m(t-n_{k_m})+e(t)
+A(q)\hat{y}(t) = \sum_{m=1}^{3}B_m(q)u_m(t-n_{k_m})+e(t)
 \end{equation}
 
-Where y(t) is the output at time t, angle of the elbow joint, in this case; u(t) are the inputs, being the processed sEMG values from biceps brachii, brachioradialis and triceps brachii; e(t) is the white-noise disturbance; \(n_k\)  is the delay for each input; q is the delay operator; m equals 1 for the biceps EMG signal, 2 for the triceps EMG signal and 3 for the brachioradialis EMG signal; A and B are the model parameters, defined by:
+Where \(\hat{y}(t)\) is the output at time t, angle of the elbow joint, in this case; u(t) are the inputs, being the processed sEMG values from biceps brachii, brachioradialis and triceps brachii; e(t) is the white-noise disturbance; \(n_k\)  is the delay for each input; \(q\) is the delay operator; \(m\) equals 1 for the biceps EMG signal, 2 for the triceps EMG signal and 3 for the brachioradialis EMG signal; A and B are the model parameters, defined by:
 
 \begin{equation}
 \label{eq:A}
@@ -341,14 +352,14 @@ Subject 6 & 0 & 4, 3, 10 & 3, 0, 0\\
    
 
 
-Using the values from table \ref{ta:order} as the ARX model orders, it was possible to calculate the model for elbow joint angle using the three sEMG measurements and compare it to the experimentally measured values. As an example, figure \ref{Angle Comparison} shows a comparison between the calculated and estimated angle, for continuous and intermittent movement, for subject 2.
+Using the values from table \ref{ta:order} as the ARX model orders, it was possible to calculate the model for elbow joint angle using the three sEMG measurements as input and compare it to the experimentally measured values. As an example, figure \ref{Angle Comparison} shows a comparison between the calculated and estimated angle, for continuous and intermittent movement, for subject 2.
 
-Using the same model order and parameters previously calculated, we estimated the response of the system using a second batch of data, recorded in a different day. An example of the result of this process can be seen in figure \ref{Validation Procedure}, where the model calculated for the subject number 3 was used to estimate the elbow joint angle using the input data acquired from the second day of testing.
+Using the same model order and parameters previously calculated, we estimated the response of the system using a second batch of data, recorded in a different day. %An example of the result of this process can be seen in figure \ref{Validation Procedure}, where the model calculated for the subject number 3 was used to estimate the elbow joint angle using the input data acquired from the second day of testing.
 
-The data acquired from the second day of testing were also used to calculate a new model, using the same orders determined in first test set. This way, it is possible to evaluate if the model orders calculated in one test set can be successfully used to calculate a new model for a different data set.
+The data acquired from the second day of testing were also used to calculate a new model, using the same orders determined in the first test set. This way, it is possible to evaluate if the model orders calculated in one test set can be successfully used to calculate a new model for a different data set.
 
    
-   \begin{table*}[h]
+   \begin{table*}[t]
 \caption{Correlation factor and Root-mean-square error for the calculated and measured angle values}
 \label{ta:correlation}
 \centering
@@ -395,8 +406,6 @@ Subject 6 & 1.5 kg &0.9406 &22.16 &0.9468 &15.91 & 0.8456 & 75.72 & 0.8487 & 87.
 
 \end{tabular}%
 }
-\centering
-
 \label{ta:corr}
 \end{table*}
 
@@ -407,17 +416,17 @@ To better determine the accuracy of the model, two performance parameters were u
 
 This paper proposed a method for determining the elbow joint angle based on the measurement of the sEMG of biceps brachii, triceps brachii and brachioradialis from six test subjects. The sEMG-to-Angle model was estimated using the data collected from the experiment and a system identification method, more specifically, ARX. Using the acquired sEMG data as input to the estimated model, it was possible to obtain an estimation of the elbow angle. Using the data from the IMU (real angle value) it was possible to validate the estimation based on sEMG.
 
-\begin{figure}[bthp]
-      \centering
-      \includegraphics[width=0.95\columnwidth]{Images/Different_Input.jpg}
-      \caption{Using the same model calculated with the first data set, but using the EMG data from the second test set as input. a) shows the comparison for the continuous movement and b) the comparison for the discrete movement}
-      \label{Validation Procedure}
-   \end{figure}
+% \begin{figure}[bthp]
+%       \centering
+%       \includegraphics[width=0.95\columnwidth]{Images/Different_Input.jpg}
+%       \caption{Using the same model calculated with the first data set, but using the EMG data from the second test set as input. a) shows the comparison for the continuous movement and b) the comparison for the discrete movement}
+%       \label{Validation Procedure}
+%    \end{figure}
 
 The experimental data showed that it is possible to use the EMG data to estimate a correlation between joint angle and sEMG values, at least for the experimental conditions presented here.
 %Even though estimating one model for continuous movement and another one for discrete movement gives higher precision, it is possible to calculate a single model for both movements.
 
-The results achieved in this paper show similar precision values to those achieved by other authors in similar works. For the majority of simulations, the model achieved values of correlation over $90\%$ and RMSE under $20^\circ$. Considering the worse results, the correlation was no less than $70\%$ and the RMSE not greater than $25^\circ$.
+The results achieved in this paper show similar precision values to those achieved by other authors in similar works \cite{Pang2015165,Liu1999391,Rahmatian2016158,Mamikoglu2016785}. For the majority of simulations, the model achieved values of correlation over $90\%$ and RMSE under $20^\circ$. Considering the worse results, the correlation was no less than $70\%$ and the RMSE not greater than $25^\circ$.
 
 %As stated before, by lifting different weights the model parameters are altered. For the same test subject the A(q) and C(q) parameters (see eq. 3) maintained values with less than 1\% difference from one another, while the B(q) values assumed a greater range of values.
 
@@ -436,7 +445,7 @@ For the majority of the test subjects, it was not possible to use the same model
                                   % so it should come on the page before the last. Make
                                   % sure that you do not shorten the textheight too much.
 
-For subjects 2 and 3, repeating the model achieved correlation above $75\%$ and RMSE below $32^\circ$. For subject 3, specifically, using the same model achieved values of correlation above $93\%$ and RMSE below $20^\circ$. Even though it is possible to note that the estimation is not as precise as it was when using the first data set as input, these results can be regarded as very good compared to other similar works \cite{Pang2015165,Rahmatian2016158,Mamikoglu2016785,Liu1999391}. More investigation is required to determine if those models are capable of estimating the joint angle for any test conducted with these test subjects.
+For subjects 2 and 3, repeating the model achieved correlation above $75\%$ and RMSE below $32^\circ$. For subject 3, specifically, using the same model achieved values of correlation above $90\%$ and RMSE below $20^\circ$. Even though it is possible to note that the estimation is not as precise as it was when using the first data set as input, these results can be regarded as very good compared to other similar works. More investigation is required to determine if those models are capable of estimating the joint angle for any test conducted with these test subjects.
 % * <aforner@usp.br> 2018-01-28T12:57:50.848Z:
 % 
 % > good
