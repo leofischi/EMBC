@@ -36,6 +36,17 @@
 }
 \begin{document}
 
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\topmargin}{#1}%
+\setlength{\leftmargin}{0cm}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{\end{list}}
 
 
 \maketitle
@@ -360,10 +371,11 @@ The data acquired from the second day of testing were also used to calculate a n
 
    
    \begin{table*}[t]
+   \vspace{2mm}
 \caption{Correlation factor and Root-mean-square error for the calculated and measured angle values}
 \label{ta:correlation}
 \centering
-\resizebox{\textwidth}{!}{%
+\resizebox{0.99\textwidth}{!}{%
 \begin{tabular}{|c c|c c|c c|c c|c c|c c|c c|}
 \hline
 \multicolumn{2}{|c|}{} & \multicolumn{4}{c|}{Model Estimation, first test set} & \multicolumn{4}{c|}{Same model, second test set} & \multicolumn{4}{c|}{New model, same orders, second test set} \\
@@ -426,6 +438,8 @@ This paper proposed a method for determining the elbow joint angle based on the 
 The experimental data showed that it is possible to use the EMG data to estimate a correlation between joint angle and sEMG values, at least for the experimental conditions presented here.
 %Even though estimating one model for continuous movement and another one for discrete movement gives higher precision, it is possible to calculate a single model for both movements.
 
+\begin{changemargin}{10cm}{0cm}
+
 The results achieved in this paper show similar precision values to those achieved by other authors in similar works \cite{Pang2015165,Liu1999391,Rahmatian2016158,Mamikoglu2016785}. For the majority of simulations, the model achieved values of correlation over $90\%$ and RMSE under $20^\circ$. Considering the worse results, the correlation was no less than $70\%$ and the RMSE not greater than $25^\circ$.
 
 %As stated before, by lifting different weights the model parameters are altered. For the same test subject the A(q) and C(q) parameters (see eq. 3) maintained values with less than 1\% difference from one another, while the B(q) values assumed a greater range of values.
@@ -436,7 +450,7 @@ The results achieved in this paper show similar precision values to those achiev
 
 %The repeatability of the model was successful for the cases studied in this work, even though it is possible to note that the model is not as precise as it was for the calibration procedure.
 
-For the majority of the test subjects, it was not possible to use the same model to estimate the angle of the elbow joint for tests conducted in different days. Since the EMG signals may change for one time to another, due to several reasons as slight change in electrode position, tissue properties or temperature \cite{soderberg1975}, it may not be possible to determine a model capable of estimating the joint angle for data acquired on different days or test setups, using the methods described in this work.
+For the majority of the test subjects, it was not possible to use the same model to estimate the angle of the elbow joint for tests conducted in different days. Since the EMG signals may change for one time to another, due to several reasons as slight change in electrode position, tissue properties or temperature \cite{soderberg1975}, it may not be possible to determine a model that estimates the joint angle for data acquired on different days or test setups, using the methods described in this work.
 
 \addtolength{\textheight}{-4.5cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
@@ -465,6 +479,10 @@ The same model order calculated in the first test can be used for the subsequent
 In future works it will be studied if it is possible to define one single estimated model for each subject, independent of the weight being lifted, or even one global model that is capable of estimating joint angles for a big range of individuals. The calculated models will be used for the control of an EMG-driven upper limb exoskeleton.
 
 
+
+
+
+\end{changemargin}
 
 
 
