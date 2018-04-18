@@ -28,7 +28,7 @@
 % * <aforner@usp.br> 2018-01-28T08:34:32.702Z:
 %
 % ^.
-\title{\LARGE \bf Elbow joint angle estimation with surface electromyography using autoregressive models
+\title{\LARGE \bf Elbow Joint Angle Estimation with Surface Electromyography Using Autoregressive Models
 }
 
 \author{L. F. Sommer, C. Barreira, C. Noriega, F. Camargo-Junior, R.T. Moura and A. Forner-Cordero% <-this % stops a space
@@ -138,8 +138,10 @@ The paper is organized as follows: Section II presents the methods for experimen
 
 \section{Methods}
 \subsection{Subjects and experimental setup}
+The experimental procedures involving human subjects described in this paper were approved by the Comite de Etica em Pesquisa do Hospital Universitario da Universidade de Sao Paulo (CEP-HU/USP).
+
 Six volunteers (age between 21-57 years old, height between 1.61-1.91 m, weight between 49.3-91.4 kg, four male, two female, all right-handed) without known neuromuscular deficit participated in the experiments. Elbow joint angle along with surface Electromyography (sEMG) of three right arm muscles (biceps brachii,  triceps brachii and brachioradialis) were recorded. 
-sEMG was recorded with 3 pairs of BTS FREEEMG 1000 (BTS SpA, Italy) electrodes with an electrode separation of 20mm with the electrode diameter being 4mm. A pair of electrodes was placed on the biceps and other pair on the triceps following the SENIAM guidelines \cite{SENIAM20170110}. To determine the electrode positions of the brachioradialis muscle, the subject was asked to apply force to flex the forearm while keeping it at \(90^{\circ}\). Then, the electrodes were placed on the muscle belly separated by 20mm following the muscle fiber direction. The sampling rate was of 1KHz with 16 bit resolution. The user interface was the BTS FREEEMG software. 
+sEMG was recorded with 3 pairs of BTS FREEEMG 1000 (BTS SpA, Italy) electrodes with an electrode separation of 20mm with the electrode diameter being 4mm. A pair of electrodes was placed on the biceps and other pair on the triceps following the SENIAM guidelines \cite{SENIAM20170110}. To determine the electrode positions of the brachioradialis muscle, the subject was asked to apply force to flex the forearm while keeping it at \(90^{\circ}\). Then, the electrodes were placed on the muscle belly separated by 20mm following the muscle fiber direction. The sampling rate was of 1KHz with 16 bit resolution. The user interface was the BTS FREEEMG software. This hardware does not require the attachment of a reference electrode.
 
   To measure the joint angle, a six degrees of freedom Inertial Measurement Unit (IMU, VN-100 from VectorNav, TX, USA), with \(0.01^{\circ}\) precision, was attached on the internal aspect of the forearm, located at two-thirds distance from the elbow to the wrist. The angle values were acquired with a rate of 100 samples per second. The data was collected with Matlab\textsuperscript{\textregistered}(The Mathworks Inc, USA).
 
@@ -221,7 +223,7 @@ Four different modeling techniques were tested to determine which of them gave t
 
 In order to find a solution a search was done using 1000 models of each type with random model orders ranging from 1 to 10. A data window of 6s was used to calibrate the model, while the entire data vector was used to validate the model.
 
-Each model was compared to the reference angle using equation \ref{eq:fitness}. The orders of the model that achieved the highest fitness value were chosen. The parameters of the models were estimated using time-domain data in Matlab\textsuperscript{\textregistered}.
+Each model was compared to the reference angle using equation \ref{eq:fitness}. The orders of the model that achieved the highest fitness value were chosen and are presented at table \ref{ta:order}. The parameters of the models were estimated using time-domain data in Matlab\textsuperscript{\textregistered}.
 
 % With the model estimation technique chosen, it is necessary to determine the order of its parameters. To determine the chosen model order, 400 random combinations were tested for each data set with order values going from 0 to 10. The order chosen was the one that gave the best fit (see eq. \ref{eq:NRMSE}) between the calculated value and the one measured by the experiment. The coefficients of the models were estimated using time-domain data in Matlab\textsuperscript{\textregistered} (The Mathworks Inc, USA), minimizing a quadratic prediction error criterion.
 
@@ -353,7 +355,7 @@ The data acquired from the second experimental set were also used to calculate a
 \hline
 \multicolumn{2}{|c|}{} & \multicolumn{2}{c|}{Continuous} & \multicolumn{2}{c|}{Intermittent} & \multicolumn{2}{c|}{Continuous} & \multicolumn{2}{c|}{Intermittent} & \multicolumn{2}{c|}{Continuous} & \multicolumn{2}{c|}{Intermittent} \\
 \hline
-\multicolumn{2}{|c|}{} & Correlation & RMSE & Correlation & RMSE & Correlation & RMSE & Correlation & RMSE & Correlation & RMSE & Correlation & RMSE\\
+\multicolumn{2}{|c|}{} & Correlation & RMSE (degrees) & Correlation & RMSE (degrees) & Correlation & RMSE (degrees) & Correlation & RMSE (degrees) & Correlation & RMSE (degrees) & Correlation & RMSE (degrees)\\
 \hline \hline
 
 & 0 kg &0.9477 &13.73 &0.9404 &17.36 & 0.0224 & 65.02 & 0.1546 & 60.29 &0.9500 &10.84 & 0.8195 &20.76\\
@@ -406,11 +408,8 @@ This paper proposed a method to estimate the elbow joint angle based on the meas
 %       \label{Validation Procedure}
 %    \end{figure}
 
-The experimental data showed that it is possible to use the EMG data to estimate joint angles from sEMG values for the experimental conditions presented here.
-
-%Even though estimating one model for continuous movement and another one for discrete movement gives higher precision, it is possible to calculate a single model for both movements.
-
-The results achieved in this paper show similar precision values to those achieved by other authors  \cite{Pang2015165,Liu1999391,Rahmatian2016158,Mamikoglu2016785}. For the majority of simulations, the model achieved values of correlation over $90\%$ and RMSE under $20^\circ$. Considering the worse results, the correlation was no less than $70\%$ and the RMSE not greater than $25^\circ$.
+The experimental data showed that it is possible to use the EMG data to estimate joint angles from sEMG values for the experimental conditions presented here. %Even though estimating one model for continuous movement and another one for discrete movement gives higher precision, it is possible to calculate a single model for both movements.
+The results achieved in this paper show similar precision values to those achieved by other authors  \cite{Pang2015165,Liu1999391,Rahmatian2016158,Mamikoglu2016785}. For most of the simulations, the model achieved correlations above $90\%$ and RMSE under $20^\circ$. Considering the worse results, the correlation was above $70\%$ and the RMSE lower than $25^\circ$.
 
 %As stated before, by lifting different weights the model parameters are altered. For the same test subject the A(q) and C(q) parameters (see eq. 3) maintained values with less than 1\% difference from one another, while the B(q) values assumed a greater range of values.
 
@@ -420,7 +419,7 @@ The results achieved in this paper show similar precision values to those achiev
 
 %The repeatability of the model was successful for the cases studied in this work, even though it is possible to note that the model is not as precise as it was for the calibration procedure.
 
-For the majority of the test subjects, it was not possible to use the same model to estimate the angle of the elbow joint for tests conducted in different days. Since the EMG signals may change for one time to another, due to several reasons as slight change in electrode position, tissue properties or temperature \cite{soderberg1975}, it may not be possible to determine a model that estimates the joint angle for data acquired on different days or test setups, using the methods described in this work.
+For the majority of the test subjects, it was not possible to use the same model to estimate the angle of the elbow joint for tests conducted in different days. One way to address this problem would be to rescale the output signal to the angle range, minimizing the RMSE of the output signal. Since the EMG signals may change for one time to another, due to several reasons as slight change in electrode position, tissue properties or temperature \cite{soderberg1975}, it may not be possible to determine a model that estimates the joint angle for data acquired on different days or test setups, using the methods described in this work. With this in mind, a solution would be to recalibrate the model at each session.
 
 \addtolength{\textheight}{-4.5cm} % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
@@ -444,7 +443,9 @@ For subjects 2 and 3, repeating the model achieved correlation above $75\%$ and 
 % 
 % ^.
 
-The same model order calculated in the first test can be used for the subsequent test sessions, without a reduction in the accuracy of the predicted angle. This shows that, even considering that environmental noise affects the EMG signal, it does not change the system order. In future work we will analyze if it is possible to estimate one model for each subject that does not depend on the weight. Moreover, it would be very interesting to obtain a subject-independent model that can estimate joint angles for a large range of subjects. These models will be used for the control of an EMG-driven upper limb exoskeleton.
+The same model order calculated in the first test can be used for the subsequent test sessions, without a reduction in the accuracy of the predicted angle. This shows that, even considering that environmental noise affects the EMG signal, it does not change the system order. With the model orders already calculated, a recalibration procedure can be quickly applied, minimizing the problem of model non-repeatability.
+
+In future work we will analyze if it is possible to estimate one model for each subject that does not depend on the weight. Moreover, it would be very interesting to obtain a subject-independent model that can estimate joint angles for a large group of subjects. These models will be used for the control of an EMG-driven upper limb exoskeleton.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
